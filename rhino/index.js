@@ -16,7 +16,7 @@ MapleStory.prototype.init = function(nickName) {
     data = JSON.parse(data);
     this.ocid = data.ocid;
 };
-MapleStory.prototype.getCharInfo = function() {
+MapleStory.prototype.getBasicInfo = function() {
     const url = 'https://open.api.nexon.com//maplestory/v1/character/basic';
     var data = new HttpRequest(url)
         .header('accept', 'application/json')

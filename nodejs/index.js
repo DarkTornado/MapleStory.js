@@ -24,7 +24,7 @@ MapleStory.prototype.init = async function(nickName) {
         console.log(e);
     }
 };
-MapleStory.prototype.getCharInfo = async function() {
+MapleStory.prototype.getBasicInfo = async function() {
     const url = 'https://open.api.nexon.com//maplestory/v1/character/basic?ocid=' + this.ocid + '&date=' + getDate();
     const response = await axios.get(url, {
         headers: {
