@@ -52,6 +52,25 @@ MapleStory.prototype.getBasicInfo = async function() {
         ocid: this.ocid
     };
 };
+MapleStory.prototype.getStatus = async function() {
+    const url = 'https://open.api.nexon.com//maplestory/v1/character/stat?ocid=' + this.ocid + '&date=' + getDate();
+    const response = await axios.get(url, {
+        headers: {
+            'accept': 'application/json',
+            'x-nxopen-api-key': this.key
+        }
+    });
+    const data = response.data.final_stat;
+    const result = [];
+    data.forEach((e, i) => {
+        result[i] = {
+            name: e.stat_name,
+            value: e.stat_value
+        };
+    });
+    console.log(result);
+    return result;
+};
 
 function getDate() {
     process.env.TZ = 'Asia/Seoul';
