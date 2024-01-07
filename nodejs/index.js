@@ -68,7 +68,6 @@ MapleStory.prototype.getStatus = async function() {
             value: e.stat_value
         };
     });
-    console.log(result);
     return result;
 };
 
