@@ -70,6 +70,58 @@ MapleStory.prototype.getStatus = async function() {
     });
     return result;
 };
+MapleStory.prototype.getBeauty = async function() {
+    const url = 'https://open.api.nexon.com//maplestory/v1/character/beauty-equipment?ocid=' + this.ocid + '&date=' + getDate();
+    const response = await axios.get(url, {
+        headers: {
+            'accept': 'application/json',
+            'x-nxopen-api-key': this.key
+        }
+    });
+    const data = response.data;
+    const hair = data.character_hair.hair_name.split(' ');
+    hair.shift();
+    const result = {
+        hair: {
+            name: hair.join(' ')
+        },
+        face: {
+            name: data.character_face.face_name
+        },
+        skin: data.character_skin_name
+    };
+    if (data.character_hair.mix_color == null) {
+        result.hair.isMix = false;
+        result.hair.color = data.character_hair.base_color;
+    } else {
+        result.hair.isMix = true;
+        result.hair.color = [
+            {
+                color: data.character_hair.base_color,
+                rate: 100 - parseInt(data.character_hair.mix_rate)
+            }, {
+                color: data.character_hair.mix_color,
+                rate: parseInt(data.character_hair.mix_rate)
+            }
+        ];
+    }
+    if (data.character_face.mix_color == null) {
+        result.face.isMix = false;
+        result.face.color = data.character_face.base_color;
+    } else {
+        result.face.isMix = true;
+        result.face.color = [
+            {
+                color: data.character_face.base_color,
+                rate: 100 - parseInt(data.character_face.mix_rate)
+            }, {
+                color: data.character_face.mix_color,
+                rate: parseInt(data.character_face.mix_rate)
+            }
+        ];
+    }
+    return result;
+};
 
 function getDate() {
     process.env.TZ = 'Asia/Seoul';
